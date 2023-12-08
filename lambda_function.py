@@ -9,8 +9,8 @@ mobile_numbers = {
     'Vishnu': '+447767991451',
     'Sujata': '+447778456215',
     'Sumit': '+447585865960',
-    'Bineesha': '+447867215257',
-    'Vandana': '+447466624343',
+    'Bineesha': '+447466624343',
+    'Vandana': '+447867215257',
     # Add more names and numbers as needed
 }
 
@@ -19,9 +19,9 @@ def get_mobile_number(name):
 
 
 account_sid = 'ACa2676bf9648e416272ddaef654c9bbce'
-auth_token = '4d5033d5ad9c66058494560df893090c'
+auth_token = 'c0ca4e4d49e6b9c00b5b47a92acd97ef'
 twilio_client = Client(account_sid, auth_token)
-from_number='+19706596969'
+from_number='+447897034712'
 
 def send_whatsapp_message_twilio(phone_number,message_body):
     try:
@@ -42,7 +42,7 @@ def send_text_message_twilio(phone_number,message_body):
         message = twilio_client.messages.create(
             body=message_body,
             from_=from_number,
-            media_url=['https://img.randme.me/'],
+            # media_url=['https://img.randme.me/'],
             to=phone_number
         )
         return message.sid
@@ -97,7 +97,7 @@ def lambda_handler(event, context):
                 if person:  # Check if the cell is not empty
                     task = sheet.cell(row=1, column=col_index).value  # Get the task name from the header
                     phone_number = get_mobile_number(person)
-                    message = f"Reminder for {person}: Please complete your cleaning task - {task} on {today.strftime('%Y-%m-%d')} \n\n\nApologies for sliding into your messages instead of WhatsApp, but Facebook's playing hard to get and banned my account. SMH \n \n P.S Check out this top notch random meme: "
+                    message = f"Reminder for {person}: Please complete your cleaning task - {task} on {today.strftime('%Y-%m-%d')} \n \n"
                     # response = send_whatsapp_message(phone_number, message, whatsapp_api_url, access_token)
                     message_sid = send_text_message_twilio(phone_number, message)
                     if message_sid:
@@ -117,4 +117,4 @@ def lambda_handler(event, context):
 
 
 # Testing the function locally (comment out when deploying)
-# lambda_handler(None, None)
+lambda_handler(None, None)
