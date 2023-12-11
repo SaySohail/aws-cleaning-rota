@@ -6,3 +6,8 @@ module "lambda" {
   runtime       = var.runtime
   filename      = var.filename
 }
+
+module "eventbridge"{
+  source = "./modules/eventbridge"
+  lambda_function_arn = module.lambda.lambda_function_arn
+}
